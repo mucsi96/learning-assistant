@@ -1,0 +1,23 @@
+{
+  "name": "learning-assistant",
+  "main": "index.js",
+  "version": "0.1.0",
+  "homepage": "https://github.com/mucsi96/learning-assistant",
+  "authors": [
+    "Igor Mucsicska <mucsi_96@yahoo.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "normalize.css": "~3.0.3",
+    "jquery": "~2.1.4",
+    "handlebars": "~3.0.3",
+    "modernizr": "~2.8.3"
+  }
+}
