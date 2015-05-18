@@ -61,12 +61,27 @@ function takeLogRandom(questions) {
     return questions[logRandom(questions.length - 1)];
 }
 
+function takeRandom(questions) {
+    return questions[Math.floor(Math.random() * questions.length)];
+}
+
 function next() {
     var questions = questionData.questions;
 
     questions = _.filter(questions, function(question){
         return question.score < questionData.minScore;
     });
+
+    notAskedQuestions = _.filter(questions, function(question){
+        return !question.asked;
+    });
+
+    if (notAskedQuestions.length) {
+        return {
+            question: takeRandom(notAskedQuestions),
+            score: getScore()
+        }
+    }
 
     questions = _.sortBy(questions, function (question){
         return question.asked || new Date(null);
