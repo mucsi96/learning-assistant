@@ -7,36 +7,24 @@ $(function(){
             showNext(next);
         });
 
-    function setProcessingState(processing) {
-        if (processing) {
-            $("#know").attr('disabled','disabled');
-            $("#dont-know").attr('disabled','disabled');
-        } else {
-            $("#know").removeAttr('disabled');
-            $("#dont-know").removeAttr('disabled');
-        }
-    }
-
     function showNext(next) {
-        if (next.score.actual < next.score.expected) {
+        if (!next.done) {
             $("#question-placeholder").html(template(next));
         } else {
             $("#question-placeholder").html("<h2>Done!</h2>");
         }
 
         $("#know").on('click', function() {
-            setProcessingState(true);
-            $.getJSON('question/know/' + next.question.number)
+            $(this).attr('disabled','disabled');
+            $.getJSON('question/know/' + next.question.id)
             .done(function(next){
-                setProcessingState(false);
                 showNext(next);
             });
         });
         $("#dont-know").on('click', function() {
-            setProcessingState(true);
-            $.getJSON('question/dontknow/' + next.question.number)
+            $(this).attr('disabled','disabled');
+            $.getJSON('question/dontknow/' + next.question.id)
             .done(function(next){
-                setProcessingState(false);
                 showNext(next);
             });
         });

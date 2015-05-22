@@ -2,49 +2,18 @@ var fs = require('fs'),
     _ = require('lodash'),
     express = require('express'),
     open = require('open'),
-    inquirer = require('inquirer'),
     app = express(),
-    questionFile = 'questions.json',
-    questionData;
+    challengeFile = 'challenge.json',
+    challenge;
 
-if(!fs.existsSync(questionFile)) {
-    inquirer.prompt([{
-            name: 'minScore',
-            message: 'Minimal score:'
-        }, {
-            name: 'numberOfQuestions',
-            message: 'Number of questions:'
-        }],
-        function(answers) {
-            var i,
-                l,
-                questions = [];
-
-            questionData = {
-                minScore: answers.minScore,
-                questions: questions
-            }
-
-            for(i = 0, l = answers.numberOfQuestions; i < l; ++i) {
-                questions.push({
-                    number: i + 1,
-                    score: 0
-                });
-            }
-            save();
-            start();
-        });
-} else {
-    start();
-}
-
+start();
 
 function load() {
-    questionData = JSON.parse(fs.readFileSync(questionFile, 'utf-8'));
+    challenge = JSON.parse(fs.readFileSync(challengeFile, 'utf-8'));
 }
 
 function save() {
-    fs.writeFileSync(questionFile, JSON.stringify(questionData))
+    fs.writeFileSync(challengeFile, JSON.stringify(challenge))
 }
 
 function logRandom(maxN) {
@@ -65,42 +34,64 @@ function takeRandom(questions) {
     return questions[Math.floor(Math.random() * questions.length)];
 }
 
+function wasQuestionAnsweredCorrectly(question){
+    var lastAnswer = question.answers.length &&
+            question.answers[question.answers.length - 1];
+
+    return !!lastAnswer && lastAnswer.correct;
+}
+
+function getUnansweredQuestions(){
+    return _.filter(challenge.questions, function(question){
+        return !wasQuestionAnsweredCorrectly(question);
+    });
+}
+
+function getRound() {
+    var unansweredQuestions = getUnansweredQuestions();
+
+    if (!unansweredQuestions.length) {
+        return -1;
+    }
+
+    return _.min(unansweredQuestions, function(question){
+        return question.answers.length;
+    }).answers.length;
+}
+
+function getRoundQuestions(round) {
+    return _.filter(challenge.questions, function(question){
+        return round === question.answers.length;
+    });
+}
+
+function getLeavingQuestions(round) {
+    return _.filter(getRoundQuestions(round), function(question){
+        return !wasQuestionAnsweredCorrectly(question);
+    });
+}
+
 function next() {
-    var questions = questionData.questions;
+    var round = getRound();
 
-    questions = _.filter(questions, function(question){
-        return question.score < questionData.minScore;
-    });
+    if (round === -1) {
+        return {done: true};
+    }
 
-    notAskedQuestions = _.filter(questions, function(question){
-        return !question.asked;
-    });
+    var questions = getLeavingQuestions(round),
+        nextRoundQuestions = getRoundQuestions(round + 1);
 
-    if (notAskedQuestions.length) {
-        return {
-            question: takeRandom(notAskedQuestions),
-            score: getScore()
+    return {
+        question: takeRandom(questions),
+        score: {
+            round: round + 1,
+            done: nextRoundQuestions.length,
+            total: nextRoundQuestions.length + questions.length,
+            percent: Math.round(100 * nextRoundQuestions.length / (nextRoundQuestions.length + questions.length))
         }
     }
-
-    questions = _.sortBy(questions, function (question){
-        return question.asked || new Date(null);
-    });
-
-    return {
-        question: takeLogRandom(questions),
-        score: getScore()
-    };
 }
 
-function getScore() {
-    return {
-        actual: _.reduce(questionData.questions, function(total, question) {
-            return total + question.score;
-        }, 0),
-        expected: questionData.questions.length * questionData.minScore
-    }
-}
 
 app.use(express.static(__dirname + '/public'));
 app.use('/bower_components',  express.static(__dirname + '/bower_components'));
@@ -109,20 +100,20 @@ app.get('/question/next', function(req, res){
     res.send(next());
 });
 
-app.get('/question/know/:number', function(req, res){
-    var question = _.find(questionData.questions, {number: parseInt(req.params.number)});
+app.get('/question/know/:id', function(req, res){
+    var question = _.find(challenge.questions, {id: parseInt(req.params.id)});
 
-    question.asked = new Date();
-    question.score++;
+    question.lastAnswerTime = new Date();
+    question.answers.push({correct: true});
     save();
     res.send(next());
 });
 
-app.get('/question/dontknow/:number', function(req, res){
-    var question = _.find(questionData.questions, {number: parseInt(req.params.number)});
+app.get('/question/dontknow/:id', function(req, res){
+    var question = _.find(challenge.questions, {id: parseInt(req.params.id)});
 
-    question.asked = new Date();
-    question.score--;
+    question.lastAnswerTime = new Date();
+    question.answers.push({correct: false});
     save();
     res.send(next());
 });
