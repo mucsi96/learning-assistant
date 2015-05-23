@@ -39,7 +39,7 @@ if(!fs.existsSync(challengeFile) && process.argv.length < 4) {
         });
 } else if (!fs.existsSync(challengeFile)) {
     var questionFile = process.argv[3],
-        questions = fs.readFileSync(questionFile, 'utf-8').match(/\S+/g);
+        questions = _.without(fs.readFileSync(questionFile, 'utf-8').split('\n'), '');
 
     challenge = {
         questions: []
