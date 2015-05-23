@@ -1,12 +1,45 @@
 var fs = require('fs'),
     _ = require('lodash'),
     express = require('express'),
+    inquirer = require('inquirer'),
     open = require('open'),
     app = express(),
-    challengeFile = 'challenge.json',
+    challengeFile,
     challenge;
 
-start();
+if (process.argv.length < 3) {
+    console.log("Please specify a challenge file!");
+    return;
+}
+
+challengeFile = process.argv[2];
+
+if(!fs.existsSync(challengeFile)) {
+    inquirer.prompt([{
+            name: 'numberOfQuestions',
+            message: 'Number of questions:'
+        }],
+        function(answers) {
+            var i,
+                l,
+                questions = [];
+
+            challenge = {
+                questions: questions
+            }
+
+            for(i = 0, l = answers.numberOfQuestions; i < l; ++i) {
+                questions.push({
+                    id: i + 1,
+                    answers: []
+                });
+            }
+            save();
+            start();
+        });
+} else {
+    start();
+}
 
 function load() {
     challenge = JSON.parse(fs.readFileSync(challengeFile, 'utf-8'));
