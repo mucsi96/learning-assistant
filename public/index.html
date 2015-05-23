@@ -15,17 +15,13 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <h1>Learning assistant</h1>
-
         <div id="question-placeholder"></div>
 
         <script id="template" type="text/x-handlebars-template">
             {{#each questionsState}}
                 <span class="qs qs-{{this}}"></span>
             {{/each}}
-            <h2>Round: {{score.round}}</h2>
-            <h2>Round completeness: {{score.percent}}% ({{score.done}}/{{score.total}})</h2>
-            <h2>Question: {{question.text}}</h2>
+            <h2>{{question.text}}</h2>
             <button type="button" id="know">Know</button>
             <button type="button" id="dont-know">Don't know</button>
         </script>
