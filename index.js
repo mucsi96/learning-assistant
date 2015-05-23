@@ -104,6 +104,16 @@ function getLeavingQuestions(round) {
     });
 }
 
+function getQuestionsState() {
+    return _.map(challenge.questions, function(question){
+        if (wasQuestionAnsweredCorrectly(question)) {
+            return "done";
+        }
+
+        return "" + question.answers.length;
+    });
+}
+
 function next() {
     var round = getRound();
 
@@ -115,7 +125,10 @@ function next() {
         nextRoundQuestions = getRoundQuestions(round + 1);
 
     return {
-        question: takeRandom(questions),
+        questionsState: getQuestionsState(),
+        question: {
+            id: takeRandom(questions).id,
+        },
         score: {
             round: round + 1,
             done: nextRoundQuestions.length,

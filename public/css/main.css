@@ -98,6 +98,40 @@ textarea {
 
 body {
     text-align: center;
+    background-color: #eee;
+}
+
+.qs {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.qs-done {
+    background-color: #5e7d00;
+}
+
+.qs-0 {
+    background-color: #fff;
+}
+
+.qs-1 {
+    background-color: #b03911;
+    opacity: 0.33;
+}
+
+.qs-2 {
+    background-color: #b03911;
+    opacity: 0.66;
+}
+
+.qs-3 {
+    background-color: #b03911;
+}
+
+.qs-4 {
+    background-color: #a01901;
 }
 
 
