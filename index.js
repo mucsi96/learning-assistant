@@ -14,7 +14,7 @@ if (process.argv.length < 3) {
 
 challengeFile = process.argv[2];
 
-if(!fs.existsSync(challengeFile)) {
+if(!fs.existsSync(challengeFile) && process.argv.length < 4) {
     inquirer.prompt([{
             name: 'numberOfQuestions',
             message: 'Number of questions:'
@@ -30,16 +30,33 @@ if(!fs.existsSync(challengeFile)) {
 
             for(i = 0, l = answers.numberOfQuestions; i < l; ++i) {
                 questions.push({
-                    id: i + 1,
+                    id: i,
+                    text: i + 1,
                     answers: []
                 });
             }
             save();
-            start();
         });
-} else {
-    start();
+} else if (!fs.existsSync(challengeFile)) {
+    var questionFile = process.argv[3],
+        questions = fs.readFileSync(questionFile, 'utf-8').match(/\S+/g);
+
+    challenge = {
+        questions: []
+    }
+
+    for(i = 0, l = questions.length; i < l; ++i) {
+        challenge.questions.push({
+            id: i,
+            text: questions[i],
+            answers: []
+        });
+    }
+
+    save();
+
 }
+start();
 
 function load() {
     challenge = JSON.parse(fs.readFileSync(challengeFile, 'utf-8'));
@@ -126,9 +143,7 @@ function next() {
 
     return {
         questionsState: getQuestionsState(),
-        question: {
-            id: takeRandom(questions).id,
-        },
+        question: takeRandom(questions),
         score: {
             round: round + 1,
             done: nextRoundQuestions.length,
