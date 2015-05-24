@@ -99,13 +99,33 @@ textarea {
 body {
     text-align: center;
     background-color: #eee;
-    padding: 40px 20px;
+    padding: 50px 20px;
+}
+
+h2 {
+    color: #666;
+    margin: 150px 0;
 }
 
 button {
-    margin: 0 25px;
+    margin: 0 75px;
     width: 150px;
     height: 50px;
+    border: none;
+    border-radius: 50px;
+    outline: none;
+}
+
+#know {
+    background-color: #5e7d00;
+    color: #ddd;
+    opacity: 0.7;
+}
+
+#dont-know {
+    background-color: #b03911;
+    color: #ddd;
+    opacity: 0.6;
 }
 
 .qs {
@@ -117,6 +137,7 @@ button {
 
 .qs-done {
     background-color: #5e7d00;
+    opacity: 0.7;
 }
 
 .qs-0 {
