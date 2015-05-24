@@ -103,17 +103,24 @@ body {
     color: #666;
 }
 
+h1 {
+    position: relative;
+}
+
 h2 {
     margin: 150px 0;
 }
 
 button {
-    margin: 0 75px;
+    border: none;
+    outline: none;
+    border-radius: 50px;
+}
+
+.main-btn {
     width: 150px;
     height: 50px;
-    border: none;
-    border-radius: 50px;
-    outline: none;
+    margin: 0 75px;
 }
 
 #know {
@@ -123,9 +130,19 @@ button {
 }
 
 #dont-know {
+    margin: 0 75px;
     background-color: #b03911;
     color: #ddd;
     opacity: 0.6;
+}
+
+#restart {
+    position: absolute;
+    left: 0;
+    font-size: 16px;
+    font-weight: normal;
+    padding: 5px 10px;
+    margin: 6px 0;
 }
 
 .qs {

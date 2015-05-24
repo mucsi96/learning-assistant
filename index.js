@@ -16,6 +16,12 @@ questionFile = process.argv[2];
 challengeFile = questionFile.replace(/\.[^/.]+$/, '') + '.challenge.json';
 
 if (!fs.existsSync(challengeFile)) {
+    create();
+} else {
+    load();
+}
+
+function create() {
     var questions = _.without(fs.readFileSync(questionFile, 'utf-8').split('\n'), '');
 
     challenge = {
@@ -33,7 +39,6 @@ if (!fs.existsSync(challengeFile)) {
 
     save();
 }
-start();
 
 function load() {
     challenge = JSON.parse(fs.readFileSync(challengeFile, 'utf-8'));
@@ -159,13 +164,12 @@ app.get('/question/dontknow/:id', function(req, res){
     res.send(next());
 });
 
-function start() {
-    load();
+app.get('/restart', function(req, res){
+    create();
+    res.send(next());
+});
 
-    app.listen(3000, function () {
-        open('http://localhost:3000');
-        console.log('App started at http://localhost:3000');
-    });
-}
-
-
+app.listen(3000, function () {
+    open('http://localhost:3000');
+    console.log('App started at http://localhost:3000');
+});
