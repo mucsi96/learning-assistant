@@ -99,13 +99,20 @@ function getLeavingQuestions(round) {
 }
 
 function getQuestionsState() {
-    return _.map(challenge.questions, function(question){
-        if (wasQuestionAnsweredCorrectly(question)) {
-            return "done";
-        }
+    return _(challenge.questions)
+        .map(function(question) {
+            if (wasQuestionAnsweredCorrectly(question)) {
+                return -1;
+            }
 
-        return "" + question.answers.length;
-    });
+            return question.answers.length;
+        })
+        .sortBy(function(state) {
+            return state;
+        })
+        .map(function(state) {
+            return state === -1 ? "done" : "" + state;
+        });
 }
 
 function next() {
@@ -121,7 +128,7 @@ function next() {
         });
     }
 
-    return _.assign({
+    return _.assign(base, {
         question: takeRandom(getLeavingQuestions(round))
     });
 }
