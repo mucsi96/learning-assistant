@@ -22,9 +22,13 @@
             {{#each questionsState}}
                 <span class="qs qs-{{this}}"></span>
             {{/each}}
-            <h2>{{question.text}}</h2>
-            <button type="button" id="know">Know</button>
-            <button type="button" id="dont-know">Don't know</button>
+            {{#if done}}
+                <h2>Done!</h2>
+            {{else}}
+                <h2>{{question.text}}</h2>
+                <button type="button" id="know">Know</button>
+                <button type="button" id="dont-know">Don't know</button>
+            {{/if}}
         </script>
 
         <script src="bower_components/jquery/dist/jquery.min.js"></script>

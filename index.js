@@ -109,26 +109,21 @@ function getQuestionsState() {
 }
 
 function next() {
-    var round = getRound();
+    var base = {
+            title: challenge.title,
+            questionsState: getQuestionsState()
+        },
+        round = getRound();
 
     if (round === -1) {
-        return {done: true};
+        return _.assign(base, {
+            done: true
+        });
     }
 
-    var questions = getLeavingQuestions(round),
-        nextRoundQuestions = getRoundQuestions(round + 1);
-
-    return {
-        title: challenge.title,
-        questionsState: getQuestionsState(),
-        question: takeRandom(questions),
-        score: {
-            round: round + 1,
-            done: nextRoundQuestions.length,
-            total: nextRoundQuestions.length + questions.length,
-            percent: Math.round(100 * nextRoundQuestions.length / (nextRoundQuestions.length + questions.length))
-        }
-    }
+    return _.assign({
+        question: takeRandom(getLeavingQuestions(round))
+    });
 }
 
 

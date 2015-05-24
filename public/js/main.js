@@ -8,11 +8,7 @@ $(function(){
         });
 
     function showNext(next) {
-        if (!next.done) {
-            $("#question-placeholder").html(template(next));
-        } else {
-            $("#question-placeholder").html("<h2>Done!</h2>");
-        }
+        $("#question-placeholder").html(template(next));
 
         $("#know").on('click', function() {
             $(this).attr('disabled','disabled');
