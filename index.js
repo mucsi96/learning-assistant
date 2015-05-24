@@ -8,44 +8,22 @@ var fs = require('fs'),
     challenge;
 
 if (process.argv.length < 3) {
-    console.log("Please specify a challenge file!");
+    console.log("Please specify a question file!");
     return;
 }
 
-challengeFile = process.argv[2];
+questionFile = process.argv[2];
+challengeFile = questionFile.replace(/\.[^/.]+$/, '') + '.challenge.json';
 
-if(!fs.existsSync(challengeFile) && process.argv.length < 4) {
-    inquirer.prompt([{
-            name: 'numberOfQuestions',
-            message: 'Number of questions:'
-        }],
-        function(answers) {
-            var i,
-                l,
-                questions = [];
-
-            challenge = {
-                questions: questions
-            }
-
-            for(i = 0, l = answers.numberOfQuestions; i < l; ++i) {
-                questions.push({
-                    id: i,
-                    text: i + 1,
-                    answers: []
-                });
-            }
-            save();
-        });
-} else if (!fs.existsSync(challengeFile)) {
-    var questionFile = process.argv[3],
-        questions = _.without(fs.readFileSync(questionFile, 'utf-8').split('\n'), '');
+if (!fs.existsSync(challengeFile)) {
+    var questions = _.without(fs.readFileSync(questionFile, 'utf-8').split('\n'), '');
 
     challenge = {
+        title: questions[0],
         questions: []
     }
 
-    for(i = 0, l = questions.length; i < l; ++i) {
+    for(i = 1, l = questions.length; i < l; ++i) {
         challenge.questions.push({
             id: i,
             text: questions[i],
@@ -54,7 +32,6 @@ if(!fs.existsSync(challengeFile) && process.argv.length < 4) {
     }
 
     save();
-
 }
 start();
 
@@ -142,6 +119,7 @@ function next() {
         nextRoundQuestions = getRoundQuestions(round + 1);
 
     return {
+        title: challenge.title,
         questionsState: getQuestionsState(),
         question: takeRandom(questions),
         score: {

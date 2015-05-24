@@ -18,6 +18,7 @@
         <div id="question-placeholder"></div>
 
         <script id="template" type="text/x-handlebars-template">
+            <h1>{{title}}</h1>
             {{#each questionsState}}
                 <span class="qs qs-{{this}}"></span>
             {{/each}}

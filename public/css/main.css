@@ -99,11 +99,11 @@ textarea {
 body {
     text-align: center;
     background-color: #eee;
-    padding: 50px 20px;
+    padding: 0 20px;
+    color: #666;
 }
 
 h2 {
-    color: #666;
     margin: 150px 0;
 }
 
