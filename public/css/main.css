@@ -103,7 +103,7 @@ body {
     color: #666;
 }
 
-h1 {
+header {
     position: relative;
 }
 
@@ -117,6 +117,10 @@ button {
     border-radius: 50px;
 }
 
+.delayed {
+    display: none;
+}
+
 .main-btn {
     width: 150px;
     height: 50px;
@@ -127,6 +131,7 @@ button {
     background-color: #5e7d00;
     color: #ddd;
     opacity: 0.7;
+    transition: opacity .5s ease-in-out;
 }
 
 #dont-know {
@@ -134,15 +139,15 @@ button {
     background-color: #b03911;
     color: #ddd;
     opacity: 0.6;
+    transition: opacity .5s ease-in-out;
 }
 
 #restart {
     position: absolute;
     left: 0;
-    font-size: 16px;
-    font-weight: normal;
     padding: 5px 10px;
     margin: 6px 0;
+    transition: opacity .5s ease-in-out;
 }
 
 .qs {

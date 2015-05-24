@@ -18,7 +18,10 @@
         <div id="question-placeholder"></div>
 
         <script id="template" type="text/x-handlebars-template">
-            <h1><button type="button" id="restart">Restart</button>{{title}}</h1>
+            <header>
+                <button type="button" id="restart" class="delayed">Restart</button>
+                <h1>{{title}}</h1>
+            </header>
             {{#each questionsState}}
                 <span class="qs qs-{{this}}"></span>
             {{/each}}
@@ -26,8 +29,8 @@
                 <h2>Done!</h2>
             {{else}}
                 <h2>{{question.text}}</h2>
-                <button type="button" id="know" class="main-btn">Know</button>
-                <button type="button" id="dont-know" class="main-btn">Don't know</button>
+                <button type="button" id="know" class="main-btn delayed">Know</button>
+                <button type="button" id="dont-know" class="main-btn delayed">Don't know</button>
             {{/if}}
         </script>
 

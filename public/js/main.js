@@ -34,6 +34,17 @@ $(function() {
                     showNext(next);
                 });
         });
+
+        setTimeout(function() {
+            var $delayedElements = $(".delayed")
+                .removeClass('delayed')
+                .css('opacity', '0');
+
+            setTimeout(function() {
+                $delayedElements.removeAttr('style');
+            }, 0);
+        }, 1000);
+
     }
 
 });
