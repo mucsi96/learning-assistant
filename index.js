@@ -22,7 +22,8 @@ if (!fs.existsSync(challengeFile)) {
 }
 
 function create() {
-    var questions = _.without(fs.readFileSync(questionFile, 'utf-8').split('\n'), '');
+    var questions = _.without(fs.readFileSync(questionFile, 'utf-8').split('\r\n\r\n\r\n'), ''),
+        questionPars;
 
     challenge = {
         title: questions[0],
@@ -30,9 +31,11 @@ function create() {
     }
 
     for(i = 1, l = questions.length; i < l; ++i) {
+        questionPars = _.without(questions[i].split('\r\n\r\n'), ''),
         challenge.questions.push({
             id: i,
-            text: questions[i],
+            text: questionPars[0],
+            answer: questionPars[1],
             answers: []
         });
     }
@@ -45,7 +48,8 @@ function load() {
 }
 
 function save() {
-    fs.writeFileSync(challengeFile, JSON.stringify(challenge))
+
+    fs.writeFileSync(challengeFile, JSON.stringify(challenge, null, 2))
 }
 
 function logRandom(maxN) {
@@ -169,7 +173,7 @@ app.get('/restart', function(req, res){
     res.send(next());
 });
 
-app.listen(3000, function () {
-    open('http://localhost:3000');
+app.listen(3030, function () {
+    open('http://localhost:3030');
     console.log('App started at http://localhost:3000');
 });

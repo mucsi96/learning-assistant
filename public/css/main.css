@@ -108,7 +108,12 @@ header {
 }
 
 h2 {
-    margin: 150px 0;
+    margin: 150px 0 50px;
+}
+
+p {
+    text-align: left;
+    margin: 50px 40px 100px;
 }
 
 button {

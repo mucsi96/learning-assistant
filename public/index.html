@@ -20,7 +20,7 @@
         <script id="template" type="text/x-handlebars-template">
             <header>
                 <button type="button" id="restart">Restart</button>
-                <h1>{{title}}</h1>
+                <h1>{{breaklines title}}</h1>
             </header>
             {{#each questionsState}}
                 <span class="qs qs-{{this}}"></span>
@@ -28,7 +28,8 @@
             {{#if done}}
                 <h2>Done!</h2>
             {{else}}
-                <h2>{{question.text}}</h2>
+                <h2>{{breaklines question.text}}</h2>
+                <p>{{breaklines question.answer}}</p>
                 <button type="button" id="know" class="main-btn delayed">Know</button>
                 <button type="button" id="dont-know" class="main-btn delayed">Don't know</button>
             {{/if}}

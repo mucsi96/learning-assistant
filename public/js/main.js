@@ -1,6 +1,13 @@
 $(function() {
     'strict mode'
 
+    Handlebars.registerHelper('breaklines', function(text) {
+        text = Handlebars.Utils.escapeExpression(text);
+        text = text.replace(/(\r\n|\n|\r)/gm, '<br>');
+        console.log(text);
+        return new Handlebars.SafeString(text);
+    });
+
     var template = Handlebars.compile($("#template").html());
 
 
